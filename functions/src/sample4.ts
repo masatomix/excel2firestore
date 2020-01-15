@@ -20,6 +20,11 @@ type QuerySnapshot = admin.firestore.QuerySnapshot
 type DocumentSnapshot = admin.firestore.DocumentSnapshot
 
 export const getSample4 = async (request: express.Request, response: express.Response) => {
+  const returnArray = await getSample4Promise()
+  return response.json(returnArray)
+}
+
+export const getSample4Promise = async (): Promise<Array<any>> => {
   const returnArray: any = []
 
   const snapshot: QuerySnapshot = await admin.firestore().collection(SAMPLE4).get()
@@ -40,10 +45,9 @@ export const getSample4 = async (request: express.Request, response: express.Res
     // ちなみにdriverプロパティを使って、こう表示が出来る
     data.driver.get()
       .then((driverSnapshot: DocumentSnapshot) => console.log(driverSnapshot.data()))
-
     returnArray.push(data)
   })
-  return response.json(returnArray)
+  return returnArray
 }
 
 const excel2Sample4 = (): Promise<Array<any>> => {

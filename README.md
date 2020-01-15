@@ -19,6 +19,9 @@ curl http://localhost:5000/fb2samples/us-central1/api/samples/sample4
 curl http://localhost:5000/fb2samples/us-central1/api/samples/sample4 -X POST
 
 
+curl http://localhost:5000/fb2samples/us-central1/api/samples/download -O
+
+
 ## 改訂履歴
 
 0.0.2 Firestoreから取得したデータを整形するサンプルを追加。

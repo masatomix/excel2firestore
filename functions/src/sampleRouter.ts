@@ -49,9 +49,11 @@ router
    * Excelデータを行単位で読み込んで、行ごとに整形して、それをFirestoreへ書き込み。
    * Excelから数字を読み込むと書式が文字でも数字になってしまうので、関数で変換している。
    * Firestoreは、DocumentIDに数値を使えないので文字列変換をしたり、
-   * Firestoreは、undefined を取り込めないので、nullに置換している。
+   * 日付がシリアル値で取得できるので、Dateへ変換したり(サンプルとしてExcel上で3書式で確認)
+   * Excelで真偽値で入っているデータをbooleanとして取り込んだりしてる。
    * 
    * GETでは、そのデータをFirestoreから取得して、Return。
+   * Firestoreから取得したJavaScriptで扱えるよう整形する、などは未済。
    */
   .post('/sample4', postSample4)
   .get('/sample4', getSample4)

@@ -34,7 +34,19 @@ export const postSample2 = async (request: express.Request, response: express.Re
 export const getSample2 = async (request: express.Request, response: express.Response) => {
   const snapshot = await admin.firestore().collection(SAMPLE2).get()
   const returnArray: any = []
-  snapshot.forEach(docref => returnArray.push(docref.data()))
+  snapshot.forEach(docref => {
+    const orgData = docref.data()
+
+    const data = Object.assign(orgData, {
+      updatedAt: orgData.driver.updatedAt.toDate(), // Date型に変換
+      createdAt: orgData.driver.createdAt.toDate() // Date型に変換
+    })
+
+    delete orgData.driver.updatedAt // プロパティ削除
+    delete orgData.driver.createdAt // プロパティ削除
+
+    returnArray.push(data)
+  })
   return response.json(returnArray)
 }
 

@@ -16,10 +16,33 @@ export const postSample4 = async (request: express.Request, response: express.Re
   response.json(datas)
 }
 
+type QuerySnapshot = admin.firestore.QuerySnapshot
+type DocumentSnapshot = admin.firestore.DocumentSnapshot
+
 export const getSample4 = async (request: express.Request, response: express.Response) => {
-  const snapshot = await admin.firestore().collection(SAMPLE4).get()
   const returnArray: any = []
-  snapshot.forEach(docref => returnArray.push(docref.data()))
+
+  const snapshot: QuerySnapshot = await admin.firestore().collection(SAMPLE4).get()
+  snapshot.forEach((docref: DocumentSnapshot) => {
+    const orgData = docref.data()! // nullはない、と仮定
+    // プロパティを再定義。
+    const data = Object.assign(orgData, {
+      opeDateFrom: orgData.opeDateFrom.toDate(),
+      opeDateTo: orgData.opeDateTo.toDate(),
+      destinationDate: orgData.destinationDate.toDate(),
+      createdAt: orgData.createdAt.toDate(),
+      updatedAt: orgData.updatedAt.toDate(),
+
+      driverId: orgData.driver.ref.id,
+      driver: orgData.driver.ref,
+    })
+
+    // ちなみにdriverプロパティを使って、こう表示が出来る
+    data.driver.get()
+      .then((driverSnapshot: DocumentSnapshot) => console.log(driverSnapshot.data()))
+
+    returnArray.push(data)
+  })
   return response.json(returnArray)
 }
 

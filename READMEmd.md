@@ -1,0 +1,2 @@
+# excel2firestore
+Firebase Cloud Functionsを使ったexcelデータをFirestoreへ投入するサンプル

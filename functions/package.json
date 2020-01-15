@@ -1,6 +1,6 @@
 {
   "name": "functions",
-  "version": "0.0.2-SNAPSHOT",
+  "version": "0.0.2",
   "scripts": {
     "i": "rm -fr node_modules && npm i",
     "lint": "tslint --fix --project tsconfig.json",

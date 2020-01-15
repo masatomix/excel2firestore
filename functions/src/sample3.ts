@@ -17,7 +17,7 @@ export const postSample3 = async (request: express.Request, response: express.Re
 }
 
 export const getSample3 = async (request: express.Request, response: express.Response) => {
-  const snapshot = await admin.firestore().collection(`${SAMPLE3}/taskType/code`).get()
+  const snapshot = await admin.firestore().collection(`${SAMPLE3}/fooStatus/code/`).get()
   const returnArray: any = []
   snapshot.forEach(docref => returnArray.push(docref.data()))
   return response.json(returnArray)

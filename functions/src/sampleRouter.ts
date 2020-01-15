@@ -2,6 +2,7 @@ import * as express from 'express'
 import { getSample1, getSample2, postSample1, postSample2 } from './sample1'
 import { getSample3, postSample3 } from './sample3'
 import { getSample4, postSample4 } from './sample4'
+import { download } from './download'
 
 const router = express.Router()
 router
@@ -58,5 +59,13 @@ router
   .post('/sample4', postSample4)
   .get('/sample4', getSample4)
 
+  /**
+   * download.
+   * 
+   * Storageに置いてあるExcelファイルを取得し、Firestoreからとってきたデータを埋め込んで、
+   * ダウンロードするサンプル。
+   * functions/output.xlsx をBucketにアップロードしておいてください。
+   */
+  .get('/download', download)
 
 export default router

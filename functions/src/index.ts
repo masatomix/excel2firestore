@@ -1,8 +1,29 @@
-import * as functions from 'firebase-functions';
+import * as functions from 'firebase-functions'
+import * as admin from 'firebase-admin'
 
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
-//
-// export const helloWorld = functions.https.onRequest((request, response) => {
-//  response.send("Hello from Firebase!");
-// });
+
+// Firebaseのサービスアカウントキーを使う場合
+// import * as serviceAccount from './fb2samples-firebase-adminsdk.json'
+// const serviceAccountAny: any = serviceAccount
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccountAny),
+//   databaseURL: 'https://fb2samples.firebaseio.com',
+//   storageBucket: 'fb2samples.appspot.com'
+// })
+
+admin.initializeApp()
+
+import * as express from 'express'
+import * as cors from 'cors'
+
+import sampleRouter from './sampleRouter'
+
+const app = express()
+// Automatically allow cross-origin requests
+app.use(cors({ origin: true }))
+app.use('/samples', sampleRouter)
+
+export const api = functions.https.onRequest(app)
+

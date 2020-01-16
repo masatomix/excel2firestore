@@ -8,7 +8,7 @@ const SAMPLE4: string = 'sample4'
 const targetExcelFile: string = './samples.xlsx'
 
 export const postSample4 = async (request: express.Request, response: express.Response) => {
-  const datas: any[] = await excel2Sample4()
+  const datas: any[] = await excel2Sample4(targetExcelFile)
   for (const instance of datas) {
     // console.log(instance)
     admin.firestore().doc(`${SAMPLE4}/${instance.operationId}`).set(instance)
@@ -50,7 +50,7 @@ export const getSample4Promise = async (): Promise<Array<any>> => {
   return returnArray
 }
 
-const excel2Sample4 = (): Promise<Array<any>> => {
+export const excel2Sample4 = (path: string): Promise<Array<any>> => {
   const format_func = (instance: any): any => {
     const now = admin.firestore.Timestamp.now()
     const data: any = {
@@ -69,7 +69,7 @@ const excel2Sample4 = (): Promise<Array<any>> => {
     }
     return data
   }
-  return xlsx2json(targetExcelFile, SAMPLE4, format_func)
+  return xlsx2json(path, SAMPLE4, format_func)
 
   // for (const data of datas) {
   //   admin.firestore()

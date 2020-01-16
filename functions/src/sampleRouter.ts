@@ -3,6 +3,7 @@ import { getSample1, getSample2, postSample1, postSample2 } from './sample1'
 import { getSample3, postSample3 } from './sample3'
 import { getSample4, postSample4 } from './sample4'
 import { download } from './download'
+import { upload } from './upload'
 
 const router = express.Router()
 router
@@ -54,7 +55,6 @@ router
    * Excelで真偽値で入っているデータをbooleanとして取り込んだりしてる。
    * 
    * GETでは、そのデータをFirestoreから取得して、Return。
-   * Firestoreから取得したJavaScriptで扱えるよう整形する、などは未済。
    */
   .post('/sample4', postSample4)
   .get('/sample4', getSample4)
@@ -67,5 +67,13 @@ router
    * functions/output.xlsx をBucketにアップロードしておいてください。
    */
   .get('/download', download)
+
+  /**
+   * upload.
+   * 
+   * ExcelデータをUploadし、postSample4 と同じ処理を実施する
+   * 
+   */
+  .post('/upload', upload)
 
 export default router

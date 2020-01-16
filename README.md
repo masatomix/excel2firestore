@@ -19,7 +19,9 @@ curl http://localhost:5000/fb2samples/us-central1/api/samples/sample4
 curl http://localhost:5000/fb2samples/us-central1/api/samples/sample4 -X POST
 
 
-curl http://localhost:5000/fb2samples/us-central1/api/samples/download -O
+curl http://localhost:5000/fb2samples/us-central1/api/samples/download -o result.xlsx
+
+curl http://localhost:5000/fb2samples/us-central1/api/samples/upload -F file=@samples.xlsx -X POST
 ```
 
 

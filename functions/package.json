@@ -1,6 +1,6 @@
 {
   "name": "functions",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "scripts": {
     "i": "rm -fr node_modules && npm i",
     "lint": "tslint --fix --project tsconfig.json",
@@ -16,11 +16,11 @@
   },
   "main": "lib/index.js",
   "dependencies": {
-    "firebase-admin": "~7.0.0",
-    "firebase-functions": "^2.3.0",
     "@types/busboy": "^0.2.3",
     "busboy": "^0.3.1",
     "cors": "^2.8.5",
+    "firebase-admin": "^8.9.1",
+    "firebase-functions": "^3.3.0",
     "moment-timezone": "^0.5.27",
     "xlsx-populate-wrapper": "https://github.com/masatomix/xlsx-populate-wrapper.git#develop"
   },

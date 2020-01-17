@@ -1,19 +1,20 @@
 import * as functions from 'firebase-functions'
 import * as admin from 'firebase-admin'
 
+import firebaseConfig from './firebaseConfig'
+
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
 
 // Firebaseのサービスアカウントキーを使う場合
-// import * as serviceAccount from './fb2samples-firebase-adminsdk.json'
-// const serviceAccountAny: any = serviceAccount
-// admin.initializeApp({
-//   credential: admin.credential.cert(serviceAccountAny),
-//   databaseURL: 'https://fb2samples.firebaseio.com',
-//   storageBucket: 'fb2samples.appspot.com'
-// })
+import * as serviceAccount from './firebase-adminsdk.json'
+const serviceAccountAny: any = serviceAccount
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccountAny),
+  storageBucket: firebaseConfig.storageBucket
+})
 
-admin.initializeApp()
+// admin.initializeApp()
 
 import * as express from 'express'
 import * as cors from 'cors'

@@ -92,7 +92,7 @@ curl http://localhost:5000/fb2samples/us-central1/api/samples/sample4 -X POST
 
 ## 改訂履歴
 
-- 0.0.5 Excelをアップロードするサンプルを追加。
+- 0.0.5 firebase-tools群のバージョンアップと、サービスアカウントの追加、Storageへアップするサンプルの追加。リファクタリングと、StorageのURLを外だしの設定ファイルへ。データのある行に罫線を追加。
 - 0.0.4 Excelをアップロードするサンプルを追加。
 - 0.0.3 Storageに置いてあるExcelファイルを取得し、Firestoreからとってきたデータを埋め込んで、ダウンロードするサンプルを追加。functions/output.xlsx をBucketにアップロードしておいてください。
 - 0.0.2 Firestoreから取得したデータを整形するサンプルを追加。

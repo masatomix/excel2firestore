@@ -19,12 +19,12 @@ export const download = async (request: Request, response: Response) => {
     await bucket.file(fileName).download({
       destination: fullPath,
     })
-    // // ファイル読み込み
+    // ファイル読み込み
+    console.log(fullPath)
     const workbook = new xPopWrapper(fullPath)
     await workbook.init()
 
     const rowCount = await addRow(workbook)
-    // console.log(rowCount)
     applyStyles(workbook, rowCount)
 
     const newFileName = 'download.xlsx'
@@ -62,4 +62,12 @@ const applyStyles = (workbook: any, rowCount: number) => {
   sheet.range(`G2:G${rowCount + 1}`).style('numberFormat', '@') // 書式: 文字(コレをやらないと、見かけ上文字だが、F2で抜けると数字になっちゃう)
   sheet.range(`E2:F${rowCount + 1}`).style('numberFormat', 'yyyy/mm/dd') // 書式: 日付
   sheet.range(`H2:H${rowCount + 1}`).style('numberFormat', 'yyyy/mm/dd hh:mm') // 書式: 日付+時刻
+
+  // データのある行に、罫線を引く
+  sheet.range(`A2:I${rowCount + 1}`).style('border', {
+    top: { style: 'thin' },
+    left: { style: 'thin' },
+    bottom: { style: 'thin' },
+    right: { style: 'thin' }
+  })
 }

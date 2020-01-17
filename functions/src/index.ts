@@ -1,6 +1,8 @@
 import * as functions from 'firebase-functions'
 import * as admin from 'firebase-admin'
 
+import firebaseConfig from './firebaseConfig'
+
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
 
@@ -9,7 +11,7 @@ import * as serviceAccount from './firebase-adminsdk.json'
 const serviceAccountAny: any = serviceAccount
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccountAny),
-  storageBucket: 'fb2samples.appspot.com'
+  storageBucket: firebaseConfig.storageBucket
 })
 
 // admin.initializeApp()

@@ -4,7 +4,7 @@ import { getSample3, postSample3 } from './sample3'
 import { getSample4, postSample4 } from './sample4'
 import { download } from './download'
 import { upload } from './upload'
-import { templateUpload } from './templateUpload'
+import { templateUpload } from './templateUploader'
 
 const router = express.Router()
 router

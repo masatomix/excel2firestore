@@ -1,4 +1,4 @@
-import * as express from 'express'
+import { Request, Response } from 'express'
 import * as admin from 'firebase-admin'
 
 import { getSample4Promise } from './sample4'
@@ -10,7 +10,7 @@ const SAMPLE4: string = 'sample4'
 import xPopWrapper = require('xlsx-populate-wrapper')
 
 
-export const download = async (request: express.Request, response: express.Response) => {
+export const download = async (request: Request, response: Response) => {
 
   const bucket = admin.storage().bucket()
   const fileName = 'output.xlsx'

@@ -1,4 +1,4 @@
-import * as express from 'express'
+import { Request, Response } from 'express'
 import * as admin from 'firebase-admin'
 
 import { xlsx2json } from './commonUtils'
@@ -7,7 +7,7 @@ const SAMPLE1: string = 'sample1'
 const SAMPLE2: string = 'sample2'
 const targetExcelFile: string = './samples.xlsx'
 
-export const postSample1 = async (request: express.Request, response: express.Response) => {
+export const postSample1 = async (request: Request, response: Response) => {
   // insert
   const datas: any[] = await excel2Sample1()
   for (const instance of datas) {
@@ -16,14 +16,14 @@ export const postSample1 = async (request: express.Request, response: express.Re
   response.json(datas)
 }
 
-export const getSample1 = async (request: express.Request, response: express.Response) => {
+export const getSample1 = async (request: Request, response: Response) => {
   const snapshot = await admin.firestore().collection(SAMPLE1).get()
   const returnArray: any = []
   snapshot.forEach(docref => returnArray.push(docref.data()))
   return response.json(returnArray)
 }
 
-export const postSample2 = async (request: express.Request, response: express.Response) => {
+export const postSample2 = async (request: Request, response: Response) => {
   const datas: any[] = await excel2Sample2()
   for (const instance of datas) {
     admin.firestore().doc(`${SAMPLE2}/${instance.driver.driverId}`).set(instance)
@@ -31,7 +31,7 @@ export const postSample2 = async (request: express.Request, response: express.Re
   response.json(datas)
 }
 
-export const getSample2 = async (request: express.Request, response: express.Response) => {
+export const getSample2 = async (request: Request, response: Response) => {
   const snapshot = await admin.firestore().collection(SAMPLE2).get()
   const returnArray: any = []
   snapshot.forEach(docref => {

@@ -1,4 +1,4 @@
-import * as express from 'express'
+import { Request, Response } from 'express'
 import * as admin from 'firebase-admin'
 
 import { excel2Sample4 } from './sample4'
@@ -10,7 +10,7 @@ import * as fs from 'fs'
 
 const SAMPLE4: string = 'sample4'
 
-export const upload = async (request: express.Request, response: express.Response) => {
+export const upload = async (request: Request, response: Response) => {
   // https://qiita.com/rubytomato@github/items/11c7f3fcaf60f5ce3365
   console.log('start.')
   const busboy = new Busboy({ headers: request.headers })

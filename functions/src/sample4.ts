@@ -1,4 +1,4 @@
-import * as express from 'express'
+import { Request, Response } from 'express'
 import * as admin from 'firebase-admin'
 
 import { xlsx2json, dateFromSn, toBoolean } from './commonUtils'
@@ -7,7 +7,7 @@ const SAMPLE1: string = 'sample1'
 const SAMPLE4: string = 'sample4'
 const targetExcelFile: string = './samples.xlsx'
 
-export const postSample4 = async (request: express.Request, response: express.Response) => {
+export const postSample4 = async (request: Request, response: Response) => {
   const datas: any[] = await excel2Sample4(targetExcelFile)
   for (const instance of datas) {
     // console.log(instance)
@@ -19,7 +19,7 @@ export const postSample4 = async (request: express.Request, response: express.Re
 type QuerySnapshot = admin.firestore.QuerySnapshot
 type DocumentSnapshot = admin.firestore.DocumentSnapshot
 
-export const getSample4 = async (request: express.Request, response: express.Response) => {
+export const getSample4 = async (request: Request, response: Response) => {
   const returnArray = await getSample4Promise()
   return response.json(returnArray)
 }

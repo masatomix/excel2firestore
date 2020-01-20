@@ -9,9 +9,14 @@ export const templateUpload = async (request: Request, response: Response) => {
   const busboy = new Busboy({ headers: request.headers })
   const bucket = admin.storage().bucket()
 
+  // This object will accumulate all the uploaded files, keyed by their name.
+  const uploads: { [key: string]: string } = {}
+
   busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
     console.log('busboy.on.file start.')
     console.log(`File [${fieldname}]: filename: ${filename}, encoding: ${encoding} , mimetype: ${mimetype}`)
+
+    uploads[fieldname] = filename
 
     file.on('data', async (data) => {
       console.log(`File [${fieldname}] got ${data.length} bytes`)
@@ -28,17 +33,19 @@ export const templateUpload = async (request: Request, response: Response) => {
 
     file.on('end', () => {
       console.log('file.on.end start.')
-      console.log(`File [${fieldname}] Finished`)
+      console.log(`File [${fieldname}]: filename: ${filename} Finished.`)
     })
   })
 
+  // Triggered once all uploaded files are processed by Busboy.
+  // We still need to wait for the disk writes (saves) to complete.
   busboy.on('finish', () => {
     console.log('busboy.on.finish start.')
-    response.status(200).end('Finished.')
+    response
+      .status(200)
+      .send(`${Object.keys(uploads).length} file(s) uploaded.`)
   })
 
   const reqex: any = request
-  // The raw bytes of the upload will be in req.rawBody. Send it to
-  // busboy, and get a callback when it's finished.
   busboy.end(reqex.rawBody)
 }

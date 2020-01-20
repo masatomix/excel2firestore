@@ -23,7 +23,7 @@ export const templateUpload = async (request: Request, response: Response) => {
       try {
         await bucket.file(filename).save(data, {
           contentType:
-            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         })
       } catch (error) {
         console.log(error)

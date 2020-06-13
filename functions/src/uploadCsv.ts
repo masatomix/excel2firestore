@@ -4,6 +4,7 @@ import * as admin from 'firebase-admin'
 import * as Busboy from 'busboy'
 import * as iconv from 'iconv-lite'
 import * as csv from 'csvtojson'
+import { format_func } from './sample4'
 
 const SAMPLE4: string = 'sample4'
 
@@ -39,11 +40,14 @@ export const upload = async (request: Request, response: Response) => {
         )
         .on('end', () => {
           console.log(`${filename}から${datas.length}件`)
-          for (const instance of datas) {
+          const tmpPs: Array<Promise<any>> = []
+          const converted = datas.map(format_func)
+          console.table(converted)
+          for (const instance of converted) {
             console.log(`${instance.operationId} 処理します`)
-            admin.firestore().doc(`${SAMPLE4}/${instance.operationId}`).set(instance)
+            tmpPs.push(admin.firestore().doc(`${SAMPLE4}/${instance.operationId}`).set(instance))
           }
-          resolve(datas)
+          Promise.all(tmpPs).then(() => resolve(datas)).catch(()=>reject())
         })
     })
     fileWrites.push(promise)

@@ -43,8 +43,7 @@ export const getSample4Promise = async (): Promise<Array<any>> => {
     })
 
     // ちなみにdriverプロパティを使って、こう表示が出来る
-    data.driver.get()
-      .then((driverSnapshot: DocumentSnapshot) => console.log(driverSnapshot.data()))
+    data.driver.get().then((driverSnapshot: DocumentSnapshot) => console.log(driverSnapshot.data()))
     returnArray.push(data)
   })
   return returnArray
@@ -56,7 +55,7 @@ export const excel2Sample4 = (path: string): Promise<Array<any>> => {
     const data: any = {
       operationId: instance.operationId,
       driver: {
-        ref: admin.firestore().doc(`${SAMPLE1}/${instance.driverId}`)
+        ref: admin.firestore().doc(`${SAMPLE1}/${instance.driverId}`),
       },
       opeType: String(instance.opeType),
       opeDateFrom: dateFromSn(instance.opeDateFrom),
@@ -80,3 +79,25 @@ export const excel2Sample4 = (path: string): Promise<Array<any>> => {
   // }
   // return operationIds
 }
+
+
+export const format_func = (instance: any): any => {
+  const now = admin.firestore.Timestamp.now()
+  const data: any = {
+    operationId: instance.operationId,
+    driver: {
+      ref: admin.firestore().doc(`${SAMPLE1}/${instance.driverId}`),
+    },
+    opeType: instance.opeType,
+    opeDateFrom: new Date(instance.opeDateFrom),
+    opeDateTo:  new Date(instance.opeDateTo),
+    opeStatus:instance.opeStatus,
+    destinationDate:  new Date(instance.destinationDate),
+    isUnplanned: toBoolean(instance.isUnplanned),
+    createdAt: now,
+    updatedAt: now,
+  }
+  return data
+}
+
+

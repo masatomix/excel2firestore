@@ -177,8 +177,8 @@ function createCsvArrays(headings: string[], instances: any[]) {
     // console.log(instance)
     const csvArray = headings.reduce((box: any[], header: string): any[] => {
       // console.log(`${instance[header]}: ${instance[header] instanceof Object}`)
-      console.log(`${typeof instance[header]} [${instance[header]}]`)
-      console.log(instance[header] instanceof Date) 
+      // console.log(`${typeof instance[header]} [${instance[header]}]`)
+      // console.log(instance[header] instanceof Date) 
       if (instance[header] instanceof Object) {
         // box.push(JSON.stringify(instance[header])) // flagで選べるようにしたい
         box.push(instance[header])

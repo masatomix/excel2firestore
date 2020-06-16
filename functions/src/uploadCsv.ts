@@ -2,9 +2,9 @@ import { Request, Response } from 'express'
 import * as admin from 'firebase-admin'
 
 import * as Busboy from 'busboy'
-import { format_func } from './sample4'
-import { csvStream2json } from 'excel-csv-read-write'
+import { csvStream2json, toBoolean } from 'excel-csv-read-write'
 
+const SAMPLE1: string = 'sample1'
 const SAMPLE4: string = 'sample4'
 
 export const upload = async (request: Request, response: Response) => {
@@ -62,4 +62,23 @@ export const upload = async (request: Request, response: Response) => {
 
   const reqex: any = request
   busboy.end(reqex.rawBody)
+}
+
+export const format_func = (instance: any): any => {
+  const now = admin.firestore.Timestamp.now()
+  const data: any = {
+    operationId: instance.operationId,
+    driver: {
+      ref: admin.firestore().doc(`${SAMPLE1}/${instance.driverId}`),
+    },
+    opeType: instance.opeType,
+    opeDateFrom: new Date(instance.opeDateFrom),
+    opeDateTo: new Date(instance.opeDateTo),
+    opeStatus: instance.opeStatus,
+    destinationDate: new Date(instance.destinationDate),
+    isUnplanned: toBoolean(instance.isUnplanned),
+    createdAt: now,
+    updatedAt: now,
+  }
+  return data
 }

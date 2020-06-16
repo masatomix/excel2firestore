@@ -49,62 +49,19 @@ export const getSample4Promise = async (): Promise<Array<any>> => {
   return returnArray
 }
 
-const excel2Sample4 = (path: string): Promise<Array<any>> => {
-  const format_func = (instance: any): any => {
-    const now = admin.firestore.Timestamp.now()
-    const data: any = {
-      operationId: instance.operationId,
-      driver: {
-        ref: admin.firestore().doc(`${SAMPLE1}/${instance.driverId}`),
-      },
-      opeType: String(instance.opeType),
-      opeDateFrom: dateFromSn(instance.opeDateFrom),
-      opeDateTo: dateFromSn(instance.opeDateTo),
-      opeStatus: String(instance.opeStatus),
-      destinationDate: dateFromSn(instance.destinationDate),
-      isUnplanned: toBoolean(instance.isUnplanned),
-      createdAt: now,
-      updatedAt: now,
-    }
-    return data
-  }
-  return excel2json(path, SAMPLE4, format_func)
-}
 
-export const excelStream2Sample4 = (file: any): Promise<Array<any>> => {
-  const format_func = (instance: any): any => {
-    const now = admin.firestore.Timestamp.now()
-    const data: any = {
-      operationId: instance.operationId,
-      driver: {
-        ref: admin.firestore().doc(`${SAMPLE1}/${instance.driverId}`),
-      },
-      opeType: String(instance.opeType),
-      opeDateFrom: dateFromSn(instance.opeDateFrom),
-      opeDateTo: dateFromSn(instance.opeDateTo),
-      opeStatus: String(instance.opeStatus),
-      destinationDate: dateFromSn(instance.destinationDate),
-      isUnplanned: toBoolean(instance.isUnplanned),
-      createdAt: now,
-      updatedAt: now,
-    }
-    return data
-  }
-  return excelStream2json(file, SAMPLE4, format_func)
-}
-
-export const format_func = (instance: any): any => {
+const format_func = (instance: any): any => {
   const now = admin.firestore.Timestamp.now()
   const data: any = {
     operationId: instance.operationId,
     driver: {
       ref: admin.firestore().doc(`${SAMPLE1}/${instance.driverId}`),
     },
-    opeType: instance.opeType,
-    opeDateFrom: new Date(instance.opeDateFrom),
-    opeDateTo: new Date(instance.opeDateTo),
-    opeStatus: instance.opeStatus,
-    destinationDate: new Date(instance.destinationDate),
+    opeType: String(instance.opeType),
+    opeDateFrom: dateFromSn(instance.opeDateFrom),
+    opeDateTo: dateFromSn(instance.opeDateTo),
+    opeStatus: String(instance.opeStatus),
+    destinationDate: dateFromSn(instance.destinationDate),
     isUnplanned: toBoolean(instance.isUnplanned),
     createdAt: now,
     updatedAt: now,
@@ -112,3 +69,10 @@ export const format_func = (instance: any): any => {
   return data
 }
 
+const excel2Sample4 = (path: string): Promise<Array<any>> => {
+  return excel2json(path, SAMPLE4, format_func)
+}
+
+export const excelStream2Sample4 = (file: any): Promise<Array<any>> => {
+  return excelStream2json(file, SAMPLE4, format_func)
+}

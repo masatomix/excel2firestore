@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import * as admin from 'firebase-admin'
 
-import { xlsx2json } from './commonUtils'
+import { excel2json } from 'excel-csv-read-write'
 
 const SAMPLE3: string = 'sample3'
 const targetExcelFile: string = './samples.xlsx'
@@ -38,6 +38,6 @@ const excel2Sample3 = (): Promise<Array<any>> => {
     })
     return ret
   }
-  return xlsx2json(targetExcelFile, SAMPLE3, format_func)
+  return excel2json(targetExcelFile, SAMPLE3, format_func)
 
 }

@@ -1,7 +1,6 @@
 import { Request, Response } from 'express'
 import * as admin from 'firebase-admin'
-
-import { xlsx2json } from './commonUtils'
+import { excel2json } from 'excel-csv-read-write'
 
 const SAMPLE1: string = 'sample1'
 const SAMPLE2: string = 'sample2'
@@ -52,7 +51,7 @@ export const getSample2 = async (request: Request, response: Response) => {
 
 // 備忘:関数書き方1
 const excel2Sample1 = (): Promise<Array<any>> => {
-  return xlsx2json(targetExcelFile, SAMPLE1)
+  return excel2json(targetExcelFile,SAMPLE1)
 }
 
 // 備忘:関数書き方2
@@ -71,5 +70,5 @@ function excel2Sample2(): Promise<Array<any>> {
     }
     return data
   }
-  return xlsx2json(targetExcelFile, SAMPLE1, format_func)
+  return excel2json(targetExcelFile, SAMPLE1, format_func)
 }

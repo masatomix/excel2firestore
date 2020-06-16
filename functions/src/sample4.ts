@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import * as admin from 'firebase-admin'
 
-import { xlsx2json, dateFromSn, toBoolean } from './commonUtils'
+import { excelStream2json, excel2json, dateFromSn, toBoolean } from 'excel-csv-read-write'
 
 const SAMPLE1: string = 'sample1'
 const SAMPLE4: string = 'sample4'
@@ -43,40 +43,36 @@ export const getSample4Promise = async (): Promise<Array<any>> => {
     })
 
     // ちなみにdriverプロパティを使って、こう表示が出来る
-    data.driver.get()
-      .then((driverSnapshot: DocumentSnapshot) => console.log(driverSnapshot.data()))
+    data.driver.get().then((driverSnapshot: DocumentSnapshot) => console.log(driverSnapshot.data()))
     returnArray.push(data)
   })
   return returnArray
 }
 
-export const excel2Sample4 = (path: string): Promise<Array<any>> => {
-  const format_func = (instance: any): any => {
-    const now = admin.firestore.Timestamp.now()
-    const data: any = {
-      operationId: instance.operationId,
-      driver: {
-        ref: admin.firestore().doc(`${SAMPLE1}/${instance.driverId}`)
-      },
-      opeType: String(instance.opeType),
-      opeDateFrom: dateFromSn(instance.opeDateFrom),
-      opeDateTo: dateFromSn(instance.opeDateTo),
-      opeStatus: String(instance.opeStatus),
-      destinationDate: dateFromSn(instance.destinationDate),
-      isUnplanned: toBoolean(instance.isUnplanned),
-      createdAt: now,
-      updatedAt: now,
-    }
-    return data
-  }
-  return xlsx2json(path, SAMPLE4, format_func)
 
-  // for (const data of datas) {
-  //   admin.firestore()
-  //     .doc(`${SAMPLE4}/${data.instance.operationId}`)
-  //     .set(data)
-  //   await new OperationService(admin).createOperation(data.companyCode, data.instance)
-  //   operationIds.push(data.instance.operationId)
-  // }
-  // return operationIds
+const format_func = (instance: any): any => {
+  const now = admin.firestore.Timestamp.now()
+  const data: any = {
+    operationId: instance.operationId,
+    driver: {
+      ref: admin.firestore().doc(`${SAMPLE1}/${instance.driverId}`),
+    },
+    opeType: String(instance.opeType),
+    opeDateFrom: dateFromSn(instance.opeDateFrom),
+    opeDateTo: dateFromSn(instance.opeDateTo),
+    opeStatus: String(instance.opeStatus),
+    destinationDate: dateFromSn(instance.destinationDate),
+    isUnplanned: toBoolean(instance.isUnplanned),
+    createdAt: now,
+    updatedAt: now,
+  }
+  return data
+}
+
+const excel2Sample4 = (path: string): Promise<Array<any>> => {
+  return excel2json(path, SAMPLE4, format_func)
+}
+
+export const excelStream2Sample4 = (file: any): Promise<Array<any>> => {
+  return excelStream2json(file, SAMPLE4, format_func)
 }

@@ -4,6 +4,7 @@ import { getSample3, postSample3 } from './sample3'
 import { getSample4, postSample4 } from './sample4'
 import { download } from './download'
 import { upload } from './upload'
+import { upload as uploadcsv } from './uploadcsv'
 import { templateUpload } from './templateUploader'
 
 const router = express.Router()
@@ -76,6 +77,14 @@ router
    * 
    */
   .post('/upload', upload)
+  
+  /**
+   * upload.
+   * 
+   * ExcelデータをUploadし、postSample4 と同じ処理を実施する
+   * 
+   */
+  .post('/uploadcsv', uploadcsv)
 
   /**
    * templateUpload.

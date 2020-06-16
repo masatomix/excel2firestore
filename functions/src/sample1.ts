@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import * as admin from 'firebase-admin'
-import {excel2json} from 'excel-csv-read-write'
+import { excel2json } from 'excel-csv-read-write'
 
 const SAMPLE1: string = 'sample1'
 const SAMPLE2: string = 'sample2'

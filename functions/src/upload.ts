@@ -1,12 +1,11 @@
 import { Request, Response } from 'express'
 import * as admin from 'firebase-admin'
 
-import { excel2Sample4 } from './sample4'
+import { excelStream2Sample4 } from './sample4'
 
 import * as path from 'path'
 import * as os from 'os'
 import * as Busboy from 'busboy'
-import * as fs from 'fs'
 
 const SAMPLE4: string = 'sample4'
 
@@ -35,28 +34,18 @@ export const upload = async (request: Request, response: Response) => {
     const filepath = path.join(tmpdir, filename)
     uploads[fieldname] = filepath
 
-    const writeStream = fs.createWriteStream(filepath)
-    file.pipe(writeStream)
-
     // File was processed by Busboy; wait for it to be written to disk.
     const promise = new Promise((resolve, reject) => {
-      file.on('end', () => {
-        writeStream.end()
-        excel2Sample4(filepath)
-          .then((datas: any[]) => {
-            for (const instance of datas) {
-              admin
-                .firestore()
-                .doc(`${SAMPLE4}/${instance.operationId}`)
-                .set(instance)
-            }
-            resolve(datas)
-          })
-          .catch(err => reject(err))
-      })
-      // writeStream.on('finish', resolve)
-      // writeStream.on('error', reject)
+      excelStream2Sample4(file)
+        .then((datas: any[]) => {
+          for (const instance of datas) {
+            admin.firestore().doc(`${SAMPLE4}/${instance.operationId}`).set(instance)
+          }
+          resolve(datas)
+        })
+        .catch((err) => reject(err))
     })
+
     fileWrites.push(promise)
   })
 
@@ -66,12 +55,7 @@ export const upload = async (request: Request, response: Response) => {
     console.log('busboy.on.finish start.')
     const results: any[] = await Promise.all(fileWrites)
 
-    for (const file of Object.values(uploads)) {
-      fs.unlinkSync(file)
-    }
-    const length = results
-      .map(result => result.length)
-      .reduce((acc, value) => acc + value)
+    const length = results.map((result) => result.length).reduce((acc, value) => acc + value)
     // response.status(200).send(`${Object.keys(uploads).length} file executed.`)
     response.status(200).send(`${length} 件処理しました。`)
   })

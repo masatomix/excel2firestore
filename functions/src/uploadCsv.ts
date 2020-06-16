@@ -2,9 +2,8 @@ import { Request, Response } from 'express'
 import * as admin from 'firebase-admin'
 
 import * as Busboy from 'busboy'
-import * as iconv from 'iconv-lite'
-import * as csv from 'csvtojson'
 import { format_func } from './sample4'
+import { csvStream2json } from 'excel-csv-read-write'
 
 const SAMPLE4: string = 'sample4'
 
@@ -28,27 +27,19 @@ export const upload = async (request: Request, response: Response) => {
 
     // File was processed by Busboy; wait for it to be written to disk.
     const promise = new Promise((resolve, reject) => {
-      const datas: any[] = []
-      file
-        .pipe(iconv.decodeStream('Shift_JIS'))
-        .pipe(iconv.encodeStream('utf-8'))
-        .pipe(
-          csv().on('data', (data) => {
-            const row = Buffer.isBuffer(data) ? JSON.parse(data.toString()) : JSON.parse(data)
-            datas.push(row)
-          }),
-        )
-        .on('end', () => {
-          console.log(`${filename}から${datas.length}件`)
-          const tmpPs: Array<Promise<any>> = []
-          const converted = datas.map(format_func)
-          console.table(converted)
-          for (const instance of converted) {
-            console.log(`${instance.operationId} 処理します`)
-            tmpPs.push(admin.firestore().doc(`${SAMPLE4}/${instance.operationId}`).set(instance))
-          }
-          Promise.all(tmpPs).then(() => resolve(datas)).catch(()=>reject())
-        })
+      csvStream2json(file).then((datas) => {
+        console.log(`${filename}から${datas.length}件`)
+        const tmpPs: Array<Promise<any>> = []
+        const converted = datas.map(format_func)
+        console.table(converted)
+        for (const instance of converted) {
+          console.log(`${instance.operationId} 処理します`)
+          tmpPs.push(admin.firestore().doc(`${SAMPLE4}/${instance.operationId}`).set(instance))
+        }
+        Promise.all(tmpPs)
+          .then(() => resolve(datas))
+          .catch(() => reject())
+      })
     })
     fileWrites.push(promise)
   })

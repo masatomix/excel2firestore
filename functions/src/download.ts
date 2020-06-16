@@ -7,7 +7,6 @@ import * as path from 'path'
 import * as os from 'os'
 
 const SAMPLE4: string = 'sample4'
-// import xPopWrapper = require('xlsx-populate-wrapper')
 const XlsxPopulate = require('xlsx-populate')
 
 export const download = async (request: Request, response: Response) => {
@@ -23,18 +22,10 @@ export const download = async (request: Request, response: Response) => {
 
     const datas = await getSample4Promise()
 
-    // const workbook = new xPopWrapper(fullPath)
-    // await workbook.init()
-
-    // const rowCount = await addRow(workbook)
-    // applyStyles(workbook, rowCount)
-
     const newFileName = 'download.xlsx'
     const newFilePath = path.join(os.tmpdir(), newFileName)
     await internalSave2Excel(datas, newFilePath, fullPath, SAMPLE4, applyStyles)
 
-    // 書き込んだファイルを保存
-    // await workbook.commit(newFilePath)
     console.log(newFilePath)
 
     response.download(newFilePath, newFileName)
@@ -43,19 +34,6 @@ export const download = async (request: Request, response: Response) => {
     response.status(500).send(error)
   }
 }
-
-// const addRow = async (workbook: any): Promise<number> => {
-//   const datas = await getSample4Promise()
-
-//   const convertedDatas = datas.map(data =>
-//     Object.assign(data, {
-//       isUnplanned: String(data.isUnplanned) // Booleanだけは、Excelでfalseが表示出来ず。文字列化することにした。
-//     })
-//   )
-
-//   workbook.update(SAMPLE4, convertedDatas) // 更新
-//   return datas.length
-// }
 
 // https://www.npmjs.com/package/xlsx-populate#style-reference
 // https://support.office.com/en-us/article/Number-format-codes-5026bbd6-04bc-48cd-bf33-80f18b4eae68?ui=en-US&rs=en-US&ad=US
